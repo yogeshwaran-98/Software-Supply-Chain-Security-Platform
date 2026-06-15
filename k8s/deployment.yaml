@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zt-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zt-app
+
+  template:
+    metadata:
+      labels:
+        app: zt-app
+
+    spec:
+      containers:
+        - name: zt-app
+
+          image: zt-app:v1
+
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 5000
