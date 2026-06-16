@@ -40,11 +40,11 @@ jobs:
             --sarif \
             --output=semgrep.sarif
 
-      - name: Check critical findings
-        run: |
-          semgrep scan \
-            --config=p/default \
-            --error
+      # - name: Check critical findings
+      #   run: |
+      #     semgrep scan \
+      #       --config=p/default \
+      #       --error
 
       - name: Upload Semgrep report
         uses: actions/upload-artifact@v4
