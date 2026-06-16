@@ -36,6 +36,7 @@ jobs:
         run: |
           semgrep scan \
             --config=p/default \
+            --error \
             --sarif \
             --output=semgrep.sarif
 

@@ -14,15 +14,6 @@ def health():
         "status": "healthy"
     }
 
-# Intentionally vulnerable endpoint
-@app.route("/execute")
-def execute():
-    code = request.args.get("code")
-
-    if code:
-        return str(eval(code))
-
-    return "Provide ?code="
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
