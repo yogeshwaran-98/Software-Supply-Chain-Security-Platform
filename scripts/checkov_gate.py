@@ -1,7 +1,7 @@
 import json
 import sys
 
-with open("checkov-report.json") as f:
+with open("reports/checkov.json") as f:
     data = json.load(f)
 
 fail = False
