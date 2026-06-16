@@ -116,3 +116,24 @@ jobs:
         with:
           name: dependency-check-report
           path: reports
+
+  checkov:
+    name: Checkov IaC Scan
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Checkov (both outputs)
+        run: |
+          mkdir -p reports
+          checkov -d --external-checks-dir checkov-policies . -o json > reports/checkov.json
+          checkov -d --external-checks-dir checkov-policies . -o sarif > reports/results.sarif
+
+      - name: Severity Gate
+        run: python scripts/checkov_gate.py
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: reports/results.sarif

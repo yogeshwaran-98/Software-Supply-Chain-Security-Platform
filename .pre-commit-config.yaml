@@ -3,3 +3,8 @@ repos:
     rev: v8.24.0
     hooks:
       - id: gitleaks
+
+  # - repo: https://github.com/bridgecrewio/checkov.git
+  #   rev: 3.2.469
+  #   hooks:
+  #     - id: checkov
