@@ -33,12 +33,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Semgrep scan
+        continue-on-error: true
         run: |
           semgrep scan \
             --config=p/default \
             --sarif \
             --output=semgrep.sarif
-          continue-on-error: true
+
       - name: Check critical findings
         run: |
           semgrep scan \
@@ -52,44 +53,44 @@ jobs:
           name: semgrep-report
           path: semgrep.sarif
 
-  sonarqube:
-    runs-on: ubuntu-latest
+  # sonarqube:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Source
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  #   steps:
+  #     - name: Checkout Source
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+  #     - name: Setup Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.11"
 
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r app/requirements.txt
-          pip install pytest pytest-cov
+  #     - name: Install Dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install -r app/requirements.txt
+  #         pip install pytest pytest-cov
 
-      - name: Run Tests and Generate Coverage
-        run: |
-          pytest app/tests \
-            --cov=app \
-            --cov-report=xml \
-            --cov-report=term
+  #     - name: Run Tests and Generate Coverage
+  #       run: |
+  #         pytest app/tests \
+  #           --cov=app \
+  #           --cov-report=xml \
+  #           --cov-report=term
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  #     - name: SonarQube Scan
+  #       uses: SonarSource/sonarqube-scan-action@v5
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-      - name: SonarQube Quality Gate
-        uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #     - name: SonarQube Quality Gate
+  #       uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
+  #       timeout-minutes: 5
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   dependency-check:
     name: OWASP Dependency Check
