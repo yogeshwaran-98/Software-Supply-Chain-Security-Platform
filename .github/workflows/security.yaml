@@ -124,11 +124,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Install Checkov
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install checkov
+
       - name: Run Checkov (both outputs)
         run: |
           mkdir -p reports
-          checkov -d --external-checks-dir checkov-policies . -o json > reports/checkov.json
-          checkov -d --external-checks-dir checkov-policies . -o sarif > reports/results.sarif
+          checkov -d . --external-checks-dir checkov-policies -o json > reports/checkov.json
+          checkov -d . --external-checks-dir checkov-policies -o sarif > reports/results.sarif
 
       - name: Severity Gate
         run: python scripts/checkov_gate.py
