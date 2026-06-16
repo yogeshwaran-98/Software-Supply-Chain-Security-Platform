@@ -1,0 +1,28 @@
+title = "Zero Trust Supply Chain Rules"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "api-key"
+description = "Detect API keys"
+regex = '''API_[A-Za-z0-9]{32}'''
+tags = ["apikey", "internal"]
+
+[[rules]]
+id = "github-pat"
+description = "GitHub Personal Access Token"
+regex = '''ghp_[A-Za-z0-9]{36}'''
+tags = ["github", "token"]
+
+[[rules]]
+id = "aws-access-key"
+description = "AWS Access Key"
+regex = '''AKIA[0-9A-Z]{16}'''
+tags = ["aws", "cloud"]
+
+[[allowlists]]
+description = "Ignore test"
+paths = [
+  '''tests/.*'''
+]
