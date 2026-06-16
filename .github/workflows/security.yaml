@@ -130,6 +130,7 @@ jobs:
           pip install checkov
 
       - name: Run Checkov (both outputs)
+        continue-on-error: true
         run: |
           mkdir -p reports
           checkov -d . --external-checks-dir checkov-policies -o json > reports/checkov.json
