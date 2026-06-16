@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+
+    <suppress>
+        <notes>
+            Example: Suppressing known accepted-risk dependency for demo
+        </notes>
+
+        <packageUrl regex="true">
+            pkg:pypi/example.*
+        </packageUrl>
+    </suppress>
+    <suppress>
+        <notes>
+            Accepted risk - false positive confirmed
+        </notes>
+        <cve>CVE-2021-1234</cve>
+    </suppress>
+    <suppress>
+        <notes>
+            Internal dependency - accepted risk
+        </notes>
+
+        <packageUrl regex="true">
+            pkg:pypi/legacy-lib.*
+        </packageUrl>
+    </suppress>
+
+</suppressions>
