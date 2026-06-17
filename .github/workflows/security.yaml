@@ -133,7 +133,7 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p reports
-          checkov -d . --external-checks-dir checkov-policies -o json --output-file-path reports/checkov.json
+          checkov -d . --external-checks-dir checkov-policies -o json > reports/checkov.json
           checkov -d . --external-checks-dir checkov-policies -o sarif --output-file-path reports/results.sarif
 
       - name: Severity Gate
