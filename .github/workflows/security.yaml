@@ -133,8 +133,8 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p reports
-          checkov -d . --external-checks-dir checkov-policies -o json > reports/checkov.json
-          checkov -d . --external-checks-dir checkov-policies -o sarif --output-file-path reports/results.sarif
+          checkov -d . --external-checks-dir checkov-policies -o json > reports/checkov.json || true
+          checkov -d . --external-checks-dir checkov-policies -o sarif --output-file-path reports/results.sarif || true
 
       - name: Severity Gate
         run: python scripts/checkov_gate.py
@@ -179,3 +179,30 @@ jobs:
         with:
           name: Syft SBOM
           path: reports
+
+  trivy:
+    name: Trivy scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: |
+          docker build -t zt-app:latest
+
+      - name: Run Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: zero-trust-app:latest
+
+          format: sarif
+
+          output: trivy-results.sarif
+
+          severity: HIGH,CRITICAL
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-report
+          path: trivy-results.sarif
