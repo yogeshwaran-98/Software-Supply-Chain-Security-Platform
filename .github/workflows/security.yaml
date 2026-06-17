@@ -133,8 +133,8 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p reports
-          checkov -d . --external-checks-dir checkov-policies -o json > reports/checkov.json
-          checkov -d . --external-checks-dir checkov-policies -o sarif > reports/results.sarif
+          checkov -d . --external-checks-dir checkov-policies -o json --output-file-path reports/checkov.json
+          checkov -d . --external-checks-dir checkov-policies -o sarif --output-file-path reports/results.sarif
 
       - name: Severity Gate
         run: python scripts/checkov_gate.py
@@ -144,4 +144,38 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Checkov-report
+          path: reports
+
+  syft:
+    name: Generate SBOM
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          docker build -t zero-trust-app:latest ./app
+
+      - name: Create reports directory
+        run: mkdir -p reports
+
+      - name: Generate SPDX SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          image: zero-trust-app:latest
+          format: spdx-json
+          output-file: reports/sbom.spdx.json
+
+      - name: Generate CycloneDX SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          image: zero-trust-app:latest
+          format: cyclonedx-json
+          output-file: reports/sbom.cyclonedx.json
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Syft SBOM
           path: reports
