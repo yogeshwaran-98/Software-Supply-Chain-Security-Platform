@@ -188,7 +188,7 @@ jobs:
 
       - name: Build image
         run: |
-          docker build -t zt-app:latest
+          docker build -t zt-app:latest .
 
       - name: Run Trivy
         uses: aquasecurity/trivy-action@master
