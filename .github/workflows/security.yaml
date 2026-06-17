@@ -140,6 +140,7 @@ jobs:
         run: python scripts/checkov_gate.py
 
       - name: Upload report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Checkov-report
