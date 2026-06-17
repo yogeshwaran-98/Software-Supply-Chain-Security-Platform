@@ -144,4 +144,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Checkov-report
-          sarif_file: reports
+          path: reports

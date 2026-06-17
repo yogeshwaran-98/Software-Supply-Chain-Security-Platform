@@ -8,7 +8,7 @@ fail = False
 
 for report in data:
     for r in report["results"]["failed_checks"]:
-        severity = r.get("severity", "UNKNOWN").upper()
+        severity = str(r.get("severity") or "UNKNOWN").upper()
 
         if severity in ["CRITICAL", "HIGH"]:
             print(f"❌ Blocking issue: {r['check_id']} - {severity}")
