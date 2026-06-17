@@ -129,7 +129,7 @@ jobs:
           python3 -m pip install --upgrade pip
           pip install checkov
 
-      - name: Run Checkov (both outputs)
+      - name: Run Checkov
         continue-on-error: true
         run: |
           mkdir -p reports
@@ -140,7 +140,7 @@ jobs:
         run: python scripts/checkov_gate.py
 
       - name: Upload SARIF
-        uses: github/codeql-action/upload-artifact@v4
+        uses: github/upload-artifact@v4
         with:
           name: Checkov-report
           sarif_file: reports
