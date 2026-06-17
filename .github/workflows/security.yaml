@@ -193,7 +193,7 @@ jobs:
       - name: Run Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: zero-trust-app:latest
+          image-ref: zt-app:latest
 
           format: sarif
 
