@@ -140,6 +140,7 @@ jobs:
         run: python scripts/checkov_gate.py
 
       - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-artifact@v4
         with:
-          sarif_file: reports/results.sarif
+          name: Checkov-report
+          sarif_file: reports
