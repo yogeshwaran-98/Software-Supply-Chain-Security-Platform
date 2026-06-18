@@ -1,0 +1,18 @@
+- rule: Terminal Shell In Container
+  desc: Detect shell inside container
+
+  condition: >
+    evt.type=execve and
+    container and
+    proc.name in (bash, sh, zsh)
+
+  output: >
+    Shell detected
+    user=%user.name
+    command=%proc.cmdline
+
+  priority: WARNING
+
+  tags:
+    - container
+    - shell

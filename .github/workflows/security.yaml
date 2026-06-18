@@ -194,15 +194,29 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: zt-app:latest
-
           format: sarif
-
           output: trivy-results.sarif
-
           severity: HIGH,CRITICAL
+          exit-code: 0 #to ignore during demo , actual exit-code: 1
 
       - name: Upload report
         uses: actions/upload-artifact@v4
         with:
           name: trivy-report
           path: trivy-results.sarif
+  cosign:
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@v3
+
+    - name: Sign Image
+      env:
+        COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+        COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+        IMAGE_URI: https://hub.docker.com/repository/docker/yogii98/zt-app/general:latest
+
+      run: |
+        echo "$COSIGN_PRIVATE_KEY" > cosign.key
+
+        cosign sign \
+          --key cosign.key \
+          $IMAGE_URI

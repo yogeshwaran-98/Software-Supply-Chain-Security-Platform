@@ -1,0 +1,23 @@
+falco:
+  jsonOutput: true
+
+falcoctl:
+  artifact:
+    install:
+      enabled: true
+
+driver:
+  kind: modern_ebpf
+
+collectors:
+  enabled: true
+
+extraVolumes:
+  - name: custom-rules
+    configMap:
+      name: falco-custom-rules
+
+extraVolumeMounts:
+  - name: custom-rules
+    mountPath: /etc/falco/rules.d/custom-rules.yaml
+    subPath: custom-rules.yaml

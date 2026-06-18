@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: zero-trust-app
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: zero-trust-app
+
+  template:
+    metadata:
+      labels:
+        app: zero-trust-app
+
+    spec:
+      securityContext:
+        runAsNonRoot: true
+
+      containers:
+        - name: app
+
+          image: docker.io/yogii98/zt-app:latest
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+          securityContext:
+            readOnlyRootFilesystem: true
+            privileged: false

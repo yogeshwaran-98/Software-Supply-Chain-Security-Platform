@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: shell-test
+
+spec:
+  containers:
+    - name: ubuntu
+
+      image: ubuntu:22.04
+
+      command:
+        - sleep
+
+      args:
+        - infinity

@@ -1,0 +1,19 @@
+- rule: Reverse Shell Attempt
+
+  desc: Detect reverse shell tools
+
+  condition: >
+    spawned_process and
+    container and
+    proc.name in (nc,ncat,netcat,socat)
+
+  output: >
+    Reverse Shell Activity
+    pod=%k8s.pod.name
+    command=%proc.cmdline
+
+  priority: CRITICAL
+
+  tags:
+    - reverse-shell
+    - malware
